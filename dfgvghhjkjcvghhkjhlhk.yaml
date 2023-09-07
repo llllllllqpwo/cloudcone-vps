@@ -1,0 +1,146 @@
+mixed-port: 7890
+allow-lan: true
+mode: rule
+log-level: info
+ipv6: true
+profile:
+  store-selected: true
+  store-fake-ip: true
+tun:
+  enable: true
+  stack: system
+  auto-detect-interface: true
+  auto-route: true
+  dns-hijack:
+  - 0.0.0.0:53
+dns:
+  enable: true
+  listen: 0.0.0.0:53
+  ipv6: true
+  default-nameserver:
+    - 114.114.114.114
+  enhanced-mode: fake-ip
+  fake-ip-range: 28.0.0.1/8
+  nameserver:
+    - ns1.mooc.buaa.edu.cn
+    - ns2.mooc.buaa.edu.cn
+    - https://dns.alidns.com/dns-query
+    - tls://dns.google
+    - https://1.0.0.1/dns-query
+proxies:
+  - name: "hysteria"
+    type: hysteria
+    server: llllllllqpwo.pro
+    port: 53
+    auth_str: "luhua" # 将会在未来某个时候删除
+    alpn:
+      - h3
+    protocol: udp # 支持 udp/wechat-video/faketcp
+    up: "205 Mbps" # 若不写单位,默认为 Mbps
+    down: "155 Mbps" # 若不写单位,默认为 Mbps
+  - name: "gRPC-REALITY"
+    type: vless
+    server: llllllllqpwo.pro
+    port: 15565
+    uuid: youcancountonme
+    network: grpc
+    tls: true
+    udp: true
+    flow: null
+    servername: docs.python.org
+    grpc-opts:
+      grpc-service-name: grpc
+      idle_timeout: 13
+      multiMode: true
+    reality-opts:
+      public-key: gDcX4NYz1zWm8zTb5KfQd8FJRIxtwTNXu-UmaUFNtTI
+    client-fingerprint: chrome
+  - name: "Vision-REALITY"
+    type: vless
+    server: llllllllqpwo.pro
+    port: 15565
+    uuid: youcancountonme
+    network: tcp
+    tls: true
+    udp: true
+    flow: xtls-rprx-vision
+    servername: docs.python.org
+    reality-opts:
+      public-key: gDcX4NYz1zWm8zTb5KfQd8FJRIxtwTNXu-UmaUFNtTI
+    client-fingerprint: chrome
+  - name: "gRPC-REALITY-digitalocean"
+    type: vless
+    server: 2604:a880:4:1d0::376:e000
+    port: 10662
+    uuid: youcancountonme
+    network: grpc
+    tls: true
+    udp: true
+    flow: null
+    servername: docs.python.org
+    grpc-opts:
+      grpc-service-name: grpc
+      idle_timeout: 13
+      multiMode: true
+    reality-opts:
+      public-key: 2JNdUySAxGkcSX2cLJ0oLhi5HaguDPr1Ss6ed4xLKFA
+    client-fingerprint: chrome
+  - name: "Vision-REALITY-digitalocean"
+    type: vless
+    server: 2604:a880:4:1d0::376:e000
+    port: 10662
+    uuid: youcancountonme
+    network: tcp
+    tls: true
+    udp: true
+    flow: xtls-rprx-vision
+    servername: docs.python.org
+    reality-opts:
+      public-key: 2JNdUySAxGkcSX2cLJ0oLhi5HaguDPr1Ss6ed4xLKFA
+    client-fingerprint: chrome
+
+
+  
+    
+
+proxy-groups:
+  - name: PROXY
+    type: select
+    proxies:
+     - gRPC-REALITY
+     - Vision-REALITY
+     - gRPC-REALITY-digitalocean
+     - Vision-REALITY-digitalocean
+     - hysteria
+
+rule-providers:
+  reject:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/reject.txt"
+    path: ./ruleset/reject.yaml
+    interval: 86400
+
+rules:
+  - RULE-SET,reject,REJECT
+  - PROCESS-NAME,com.unionpay.tsmservice.mi,DIRECT
+  - PROCESS-NAME,AIoT.exe,DIRECT
+  - PROCESS-NAME,com.chinamobile.mcloud,DIRECT
+  - PROCESS-NAME,com.incon.spoc,DIRECT
+  - PROCESS-NAME,com.android.browser,DIRECT
+  - PROCESS-NAME,com.tencent.mm,DIRECT
+  - PROCESS-NAME,cn.edu.buaa.wxwork,DIRECT
+  - PROCESS-NAME,com.icbc,DIRECT
+  - PROCESS-NAME,com.jiaoshi.school,DIRECT
+  - PROCESS-NAME,com.xiaomi.mirror,DIRECT
+  - PROCESS-NAME,com.eg.android.AlipayGphone,DIRECT
+  - PROCESS-NAME,com.miui.tsmclient,DIRECT
+  - PROCESS-NAME,com.miui.mishare.connectivity,DIRECT
+  - PROCESS-NAME,com.MobileTicket,DIRECT
+  - DOMAIN-SUFFIX,buaabt.cn,DIRECT
+  - DOMAIN-SUFFIX,139.com,DIRECT
+  - DOMAIN-SUFFIX,buaa.edu.cn,DIRECT
+  - DOMAIN-SUFFIX,zhizhen.com,DIRECT
+  - GEOIP,LAN,DIRECT
+  - AND,((IP-CIDR6,::/0),(GEOIP,cn)),DIRECT
+  - MATCH,PROXY

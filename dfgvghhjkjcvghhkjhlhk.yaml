@@ -22,8 +22,8 @@ dns:
   enhanced-mode: fake-ip
   fake-ip-range: 28.0.0.1/8
   nameserver:
-    - ns1.mooc.buaa.edu.cn
-    - ns2.mooc.buaa.edu.cn
+    - 202.112.128.51
+    - 202.112.128.50
     - https://dns.alidns.com/dns-query
     - tls://dns.google
     - https://1.0.0.1/dns-query
@@ -123,6 +123,7 @@ rule-providers:
 
 rules:
   - RULE-SET,reject,REJECT
+  - PROCESS-NAME,com.vivo.easyshare,DIRECT
   - PROCESS-NAME,com.unionpay.tsmservice.mi,DIRECT
   - PROCESS-NAME,AIoT.exe,DIRECT
   - PROCESS-NAME,com.chinamobile.mcloud,DIRECT

@@ -8,7 +8,7 @@
 2. 导入证书
 3.     server {
         listen 443 ssl;
-        server_name             a.llllllllqpwo.pro; 
+        server_name             此处隐去; 
         ssl_certificate         /etc/nginx/certs/domain.cer;
         ssl_certificate_key     /etc/nginx/certs/private.key;
         add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;

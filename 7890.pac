@@ -26,5 +26,5 @@ function FindProxyForURL(url, host) {
     ) {/*Intranet IP*/
         return "DIRECT";
     }
-    return "SOCKS5 10.193.28.162:7890; DIRECT";
+    return "HTTP 10.193.28.162:7890; DIRECT";
 };

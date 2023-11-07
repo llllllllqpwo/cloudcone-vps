@@ -22,3 +22,10 @@
        }
 
 4. docker run -d --name nginx44 -p 443:443 --network nginxnet -v ./ganma.conf:/etc/nginx/conf.d/ganma.conf:ro -v /etc/nginx/certs:/etc/nginx/certs nginx
+
+
+# 11/7
+
+在临近到期之前突然给我换了个ipv4，还改好几次登陆密码，气死了
+
+这次把ganma.conf的路径矫正了一下，不知道能不能正常，上面那个路径里面根本没有文件。真不知道之前怎么成功的
